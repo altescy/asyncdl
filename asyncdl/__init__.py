@@ -1,3 +1,3 @@
 __version__ = "0.1.0"
 
-from asyncdl.asyncdl import download_files
+from asyncdl.asyncdl import download_files  # noqa: F401
