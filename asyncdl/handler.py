@@ -1,10 +1,10 @@
 import asyncio
-from typing import BinaryIO, Optional, AsyncIterator, Union
+from typing import AsyncIterator, BinaryIO, Optional, Union
 
 import aiohttp
 
 from asyncdl.downloader import Downloader
-from asyncdl.progress import Progress, ProgressBar, MultiProgressBar
+from asyncdl.progress import MultiProgressBar, Progress, ProgressBar
 
 
 class DownloadHandler:
@@ -49,7 +49,7 @@ class DownloadHandler:
             yield
 
 
-async def multi_download(*handlers: DownloadHandler) -> None:
+async def multi_download(*handlers: DownloadHandler, chunk_size: int = 1024) -> None:
     async with aiohttp.ClientSession() as session:
         await asyncio.wait([x.set_progress(session) for x in handlers])
 
@@ -63,7 +63,7 @@ async def multi_download(*handlers: DownloadHandler) -> None:
         with MultiProgressBar(bars) as multi_bar:
 
             async def download_with_bar(handler: DownloadHandler) -> None:
-                async for _ in handler.download(session):
+                async for _ in handler.download(session, chunk_size=chunk_size):
                     multi_bar.update()
 
             await asyncio.wait([download_with_bar(x) for x in handlers])
