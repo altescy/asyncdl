@@ -1,8 +1,7 @@
 asyncdl
 =======
 
-Asyncdl is a tiny library for downloading multipul files asyncronously.
-
+Asyncdl is a tiny library for downloading multipule files asyncronously.
 
 ```python
 >>> from asyncdl import download_files
